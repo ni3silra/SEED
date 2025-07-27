@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEED Auth Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold mb-4">Authentication Test</h1>
+        
+        <div class="space-y-4">
+            <button id="test-otp" class="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+                Test OTP Send
+            </button>
+            
+            <button id="test-verify" class="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700">
+                Test OTP Verify (908978)
+            </button>
+            
+            <button id="test-welcome" class="w-full bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700">
+                Test Welcome Message
+            </button>
+        </div>
+        
+        <div id="results" class="mt-6 p-4 bg-gray-50 rounded min-h-[100px]">
+            <p class="text-gray-600">Click buttons to test authentication functions</p>
+        </div>
+    </div>
+
+    <script type="module">
+        // Mock AuthService for testing
+        class MockAuthService {
+            constructor() {
+                this.MOCK_OTP = '908978';
+            }
+
+            async sendOTP(phoneNumber) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                return phoneNumber && phoneNumber.length >= 10;
+            }
+
+            async verifyOTP(phoneNumber, otp, role) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                if (otp === this.MOCK_OTP) {
+                    return {
+                        id: 'test_user',
+                        phoneNumber,
+                        role,
+                        isAuthenticated: true,
+                        profile: {
+                            name: 'Test User',
+                            profession: 'Tester',
+                            location: 'Test City'
+                        }
+                    };
+                }
+                return null;
+            }
+
+            getWelcomeMessage(user) {
+                return `Welcome back, ${user.profile.name}! Your financial journey continues today.`;
+            }
+        }
+
+        const authService = new MockAuthService();
+        const results = document.getElementById('results');
+
+        function showResult(message, isSuccess = true) {
+            results.innerHTML = `
+                <div class="${isSuccess ? 'text-green-700 bg-green-50' : 'text-red-700 bg-red-50'} p-3 rounded">
+                    ${message}
+                </div>
+            `;
+        }
+
+        document.getElementById('test-otp').addEventListener('click', async () => {
+            showResult('Testing OTP send...', true);
+            try {
+                const result = await authService.sendOTP('+1234567890');
+                showResult(`OTP Send Result: ${result ? 'Success' : 'Failed'}`, result);
+            } catch (error) {
+                showResult(`Error: ${error.message}`, false);
+            }
+        });
+
+        document.getElementById('test-verify').addEventListener('click', async () => {
+            showResult('Testing OTP verification...', true);
+            try {
+                const user = await authService.verifyOTP('+1234567890', '908978', 'investee');
+                if (user) {
+                    showResult(`Verification Success! User: ${user.profile.name}, Role: ${user.role}`, true);
+                } else {
+                    showResult('Verification failed - invalid OTP', false);
+                }
+            } catch (error) {
+                showResult(`Error: ${error.message}`, false);
+            }
+        });
+
+        document.getElementById('test-welcome').addEventListener('click', async () => {
+            const mockUser = {
+                profile: { name: 'John Doe' },
+                role: 'investee'
+            };
+            const message = authService.getWelcomeMessage(mockUser);
+            showResult(`Welcome Message: "${message}"`, true);
+        });
+    </script>
+</body>
+</html>

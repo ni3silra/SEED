@@ -1,0 +1,61 @@
+name: SEED UI - Deploy to Cloud Run
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-seed-ui:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # actions/checkout MUST come before auth
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+
+      - name: 'Authenticate to GCP as Infrastructure SA for deployment'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          export_environment_variables: true
+          project_id : hack-team-trans-mon-hackers
+          workload_identity_provider: projects/785558430619/locations/global/workloadIdentityPools/github-2023/providers/github-2023
+          service_account: infrastructure@hack-team-trans-mon-hackers.iam.gserviceaccount.com  # Use your Infrastructure SA to manage resources
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Configure Docker for GCP
+        run: |
+          gcloud auth configure-docker europe-west3-docker.pkg.dev        
+
+      - name: 'Build Image'
+        run: |
+          docker build -t europe-west3-docker.pkg.dev/hack-team-trans-mon-hackers/seed-ui/seed-ui:latest .
+
+      - name: Push Docker image to Container Registry
+        run: |
+          docker push europe-west3-docker.pkg.dev/hack-team-trans-mon-hackers/seed-ui/seed-ui:latest
+
+      - name: 'Deploy Cloud Run'
+        id: deploy
+        env:
+          REGION: 'europe-west3'
+          SERVICE_NAME: 'seed-ui'
+          WORKLOAD_SA_EMAIL: workload@hack-team-trans-mon-hackers.iam.gserviceaccount.com
+        run: |
+          set -e
+          gcloud run deploy "${SERVICE_NAME}" \
+            --region "${REGION}" \
+            --image "europe-west3-docker.pkg.dev/hack-team-trans-mon-hackers/seed-ui/seed-ui:latest" \
+            --service-account="${WORKLOAD_SA_EMAIL}" \
+            --allow-unauthenticated
+          
+          url=$(gcloud run services describe "${SERVICE_NAME}" --region="${REGION}" --format="value(status.url)")
+          echo "url=${url}" >> "${GITHUB_OUTPUT}"
+
+      - name: 'Poke Cloud Run'
+        run: |
+          echo "Poking URL: ${{ steps.deploy.outputs.url }}"
+          curl -s -o /dev/null -w "%{http_code}" "${{ steps.deploy.outputs.url }}"

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEED AI Platform Architecture</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        .architecture-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .layer {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .layer:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .layer-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .frontend {
+            border-left: 5px solid #3498db;
+        }
+
+        .backend {
+            border-left: 5px solid #e74c3c;
+        }
+
+        .ai-services {
+            border-left: 5px solid #9b59b6;
+        }
+
+        .component {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .component:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .component-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .seed-ui {
+            background: #3498db;
+        }
+
+        .mobile-app {
+            background: #2ecc71;
+        }
+
+        .web-portal {
+            background: #1abc9c;
+        }
+
+        .api-gateway {
+            background: #e74c3c;
+        }
+
+        .microservices {
+            background: #f39c12;
+        }
+
+        .database {
+            background: #34495e;
+        }
+
+        .gcp {
+            background: #4285f4;
+        }
+
+        .azure {
+            background: #0078d4;
+        }
+
+        .ml-service {
+            background: #9b59b6;
+        }
+
+        .data-flow {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .data-source {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .ai-pipeline {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .ai-pipeline-title {
+            font-size: 1.6em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .pipeline-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .pipeline-step {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .tech-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.2s ease;
+        }
+
+        .tech-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .google-cloud {
+            color: #4285f4;
+        }
+
+        .microsoft-azure {
+            color: #0078d4;
+        }
+
+        .ai-ml {
+            color: #9b59b6;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .animated {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">SEED AI-Powered Financial Platform</h1>
+        <p class="subtitle">Next-Generation Intelligent Financial Services Architecture</p>
+
+        <div class="architecture-container">
+            <!-- Frontend Layer -->
+            <div class="layer frontend">
+                <div class="layer-title">🎨 Frontend Layer</div>
+
+                <div class="component">
+                    <div class="component-icon seed-ui">UI</div>
+                    <div>
+                        <strong>SEED Web UI</strong><br>
+                        <small>React.js Dashboard</small>
+                    </div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon mobile-app">📱</div>
+                    <div>
+                        <strong>Mobile App</strong><br>
+                        <small>React Native/Flutter</small>
+                    </div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon web-portal">🌐</div>
+                    <div>
+                        <strong>Agent Portal</strong><br>
+                        <small>Progressive Web App</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backend Layer -->
+            <div class="layer backend">
+                <div class="layer-title">⚙️ Backend Services</div>
+
+                <div class="component">
+                    <div class="component-icon api-gateway">🚪</div>
+                    <div>
+                        <strong>API Gateway</strong><br>
+                        <small>Kong/Azure API Management</small>
+                    </div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon microservices">🔧</div>
+                    <div>
+                        <strong>Microservices</strong><br>
+                        <small>Node.js/Python FastAPI</small>
+                    </div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon database">🗄️</div>
+                    <div>
+                        <strong>Database Cluster</strong><br>
+                        <small>PostgreSQL + Redis</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Services Layer -->
+            <div class="layer ai-services">
+                <div class="layer-title">🤖 AI & ML Services</div>
+
+                <div class="component">
+                    <div class="component-icon gcp">G</div>
+                    <div>
+                        <strong>Google Vertex AI</strong><br>
+                        <small>AutoML & Custom Models</small>
+                    </div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon azure">A</div>
+                    <div>
+                        <strong>Azure Cognitive Services</strong><br>
+                        <small>Document Intelligence</small>
+                    </div>
+                </div>
+
+                <div class="component">
+                    <div class="component-icon ml-service">🧠</div>
+                    <div>
+                        <strong>GPT-4 Integration</strong><br>
+                        <small>OpenAI API</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Flow Section -->
+        <div class="ai-pipeline">
+            <div class="ai-pipeline-title">🔄 Intelligent Data Processing Pipeline</div>
+            <div class="pipeline-steps">
+                <div class="pipeline-step">
+                    <strong>📄 Document Ingestion</strong><br>
+                    Azure Form Recognizer<br>
+                    Google Document AI
+                </div>
+                <div class="pipeline-step">
+                    <strong>🔍 Data Extraction</strong><br>
+                    Computer Vision API<br>
+                    Text Analytics
+                </div>
+                <div class="pipeline-step">
+                    <strong>🤖 AI Processing</strong><br>
+                    Vertex AI AutoML<br>
+                    Azure ML Studio
+                </div>
+                <div class="pipeline-step">
+                    <strong>📊 Risk Assessment</strong><br>
+                    Custom ML Models<br>
+                    Fraud Detection
+                </div>
+                <div class="pipeline-step">
+                    <strong>💡 Insights Generation</strong><br>
+                    GPT-4 Analysis<br>
+                    Recommendation Engine
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Sources -->
+        <div class="data-flow">
+            <div class="data-source">
+                <strong>📋 Financial Documents</strong><br>
+                Bank Statements, Tax Records, Invoices
+            </div>
+            <div class="data-source">
+                <strong>📈 Financial History</strong><br>
+                Transaction Data, Credit History, Payment Patterns
+            </div>
+            <div class="data-source">
+                <strong>🏠 Household Bills</strong><br>
+                Utility Bills, Rent, Insurance, Subscriptions
+            </div>
+        </div>
+
+        <div class="arrow animated">↓ ↓ ↓</div>
+
+        <!-- Technology Stack -->
+        <div class="tech-stack">
+            <div class="tech-item google-cloud">
+                <strong>Google Cloud AI</strong><br>
+                <small>• Document AI<br>• Vertex AI<br>• AutoML Tables</small>
+            </div>
+
+            <div class="tech-item microsoft-azure">
+                <strong>Microsoft Azure</strong><br>
+                <small>• Cognitive Services<br>• Form Recognizer<br>• ML Studio</small>
+            </div>
+
+            <div class="tech-item ai-ml">
+                <strong>Advanced AI/ML</strong><br>
+                <small>• GPT-4 Integration<br>• Computer Vision<br>• NLP Processing</small>
+            </div>
+
+            <div class="tech-item">
+                <strong>Analytics & BI</strong><br>
+                <small>• Power BI Embedded<br>• Tableau Integration<br>• Custom Dashboards</small>
+            </div>
+
+            <div class="tech-item">
+                <strong>Security & Compliance</strong><br>
+                <small>• Azure Active Directory<br>• OAuth 2.0<br>• GDPR Compliance</small>
+            </div>
+
+            <div class="tech-item">
+                <strong>Infrastructure</strong><br>
+                <small>• Kubernetes<br>• Docker Containers<br>• CI/CD Pipeline</small>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

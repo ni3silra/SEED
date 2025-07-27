@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEED AI Platform Architecture</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.2em;
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+        
+        .architecture-diagram {
+            display: grid;
+            grid-template-rows: auto auto auto auto;
+            gap: 30px;
+            position: relative;
+        }
+        
+        /* User Layer */
+        .user-layer {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+        
+        .user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Frontend Layer */
+        .frontend-layer {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            position: relative;
+        }
+        
+        .frontend-component {
+            background: #3498db;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            position: relative;
+        }
+        
+        /* Backend Layer */
+        .backend-layer {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+        
+        .api-gateway {
+            background: #e74c3c;
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .microservices-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .microservice {
+            background: #f39c12;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.9em;
+            box-shadow: 0 3px 10px rgba(243, 156, 18, 0.3);
+        }
+        
+        .agent-system {
+            background: #9b59b6;
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
+            position: relative;
+        }
+        
+        /* AI Services Layer */
+        .ai-layer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .ai-service {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Data Layer */
+        .data-layer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+            padding: 25px;
+            background: #ecf0f1;
+            border-radius: 15px;
+        }
+        
+        .data-source {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        /* Arrows and Connections */
+        .arrow {
+            position: absolute;
+            color: #7f8c8d;
+            font-size: 1.5em;
+            z-index: 10;
+        }
+        
+        .arrow-down {
+            left: 50%;
+            transform: translateX(-50%);
+            top: -15px;
+        }
+        
+        .arrow-up {
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -15px;
+        }
+        
+        /* Data Flow Indicators */
+        .data-flow {
+            position: relative;
+        }
+        
+        .data-flow::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -20px;
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, #3498db, #e74c3c);
+            transform: translateX(-50%);
+        }
+        
+        .data-flow::after {
+            content: '↓';
+            position: absolute;
+            left: 50%;
+            top: 15px;
+            transform: translateX(-50%);
+            color: #e74c3c;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        /* Component Labels */
+        .layer-label {
+            text-align: center;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .component-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .component-subtitle {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        /* Hover Effects */
+        .frontend-component:hover,
+        .microservice:hover,
+        .ai-service:hover,
+        .agent-system:hover,
+        .api-gateway:hover {
+            transform: translateY(-3px);
+            transition: all 0.3s ease;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .backend-layer {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .microservices-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .ai-layer {
+                grid-template-columns: 1fr;
+            }
+            
+            .data-layer {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .frontend-layer {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .user-layer {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .data-layer {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">SEED AI-Powered Financial Platform Architecture</h1>
+        
+        <div class="architecture-diagram">
+            
+            <!-- User Layer -->
+            <div class="user-layer">
+                <div class="layer-label" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%);">👥 Users</div>
+                <div class="user">👤</div>
+                <div class="user">🏦</div>
+                <div class="user">📊</div>
+            </div>
+            
+            <!-- Frontend Layer -->
+            <div class="frontend-layer data-flow">
+                <div class="layer-label" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%);">🎨 Frontend Layer</div>
+                
+                <div class="frontend-component">
+                    <div class="component-title">SEED Web UI</div>
+                    <div class="component-subtitle">React Dashboard</div>
+                </div>
+                
+                <div class="frontend-component">
+                    <div class="component-title">Mobile App</div>
+                    <div class="component-subtitle">iOS & Android</div>
+                </div>
+                
+                <div class="frontend-component">
+                    <div class="component-title">Agent Portal</div>
+                    <div class="component-subtitle">Web Interface</div>
+                </div>
+            </div>
+            
+            <!-- Backend Layer -->
+            <div class="backend-layer data-flow">
+                <div class="layer-label" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%);">⚙️ Backend Services</div>
+                
+                <div class="api-gateway">
+                    <div class="component-title">API Gateway</div>
+                    <div class="component-subtitle">Load Balancer<br>Authentication<br>Rate Limiting</div>
+                </div>
+                
+                <div class="microservices-grid">
+                    <div class="microservice">
+                        <div class="component-title">User Service</div>
+                    </div>
+                    <div class="microservice">
+                        <div class="component-title">Document Service</div>
+                    </div>
+                    <div class="microservice">
+                        <div class="component-title">Financial Service</div>
+                    </div>
+                    <div class="microservice">
+                        <div class="component-title">Analytics Service</div>
+                    </div>
+                    <div class="microservice">
+                        <div class="component-title">Notification Service</div>
+                    </div>
+                    <div class="microservice">
+                        <div class="component-title">Report Service</div>
+                    </div>
+                </div>
+                
+                <div class="agent-system">
+                    <div class="component-title">🤖 AI Agent</div>
+                    <div class="component-subtitle">GPT-4 Powered<br>Decision Engine<br>Risk Assessment</div>
+                </div>
+            </div>
+            
+            <!-- AI Services Layer -->
+            <div class="ai-layer data-flow">
+                <div class="layer-label" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%);">🧠 AI & ML Services</div>
+                
+                <div class="ai-service">
+                    <div class="component-title">Google Vertex AI</div>
+                    <div class="component-subtitle">• Document AI<br>• AutoML Models<br>• Prediction API</div>
+                </div>
+                
+                <div class="ai-service">
+                    <div class="component-title">Azure Cognitive</div>
+                    <div class="component-subtitle">• Form Recognizer<br>• Text Analytics<br>• Computer Vision</div>
+                </div>
+                
+                <div class="ai-service">
+                    <div class="component-title">ML Pipeline</div>
+                    <div class="component-subtitle">• Risk Scoring<br>• Fraud Detection<br>• Recommendations</div>
+                </div>
+            </div>
+            
+            <!-- Data Layer -->
+            <div class="data-layer">
+                <div class="layer-label" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%);">💾 Data Sources & Storage</div>
+                
+                <div class="data-source">
+                    <div class="component-title">📄 Financial Documents</div>
+                    <div class="component-subtitle">Bank Statements<br>Tax Records<br>Invoices</div>
+                </div>
+                
+                <div class="data-source">
+                    <div class="component-title">📈 Financial History</div>
+                    <div class="component-subtitle">Transaction Data<br>Credit History<br>Payment Patterns</div>
+                </div>
+                
+                <div class="data-source">
+                    <div class="component-title">🏠 Household Data</div>
+                    <div class="component-subtitle">Utility Bills<br>Rent Records<br>Expenses</div>
+                </div>
+                
+                <div class="data-source">
+                    <div class="component-title">🗄️ Database Cluster</div>
+                    <div class="component-subtitle">PostgreSQL<br>Redis Cache<br>Power BI</div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>

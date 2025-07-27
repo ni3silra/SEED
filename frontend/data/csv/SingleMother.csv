@@ -1,0 +1,6 @@
+Party_key,Category,country,age,education_level,employment_status,monthly_income,Rent,Water,Electricity,Mobile bill,miscellaneous_expense,payment_history,credit_score,currency,sbs,Benefit_received,Monthly_expense,current_loan_balance,debt_to_income_ratio,number_of_children,phone,profession,name,role
+SP_TZ_001,SingleParent,Tanzania,56,No formal,Unemployed,80.0,20.0,15.0,30.87,20.67,12.8,,300,TZS,No,0,99.34,0,,5,+255 27 250 5980,SingleParent,Latifa,investee
+SP_TZ_002,SingleParent,Tanzania,57,No formal,Unemployed,40.14,40.0,25.14,24.78,28.8,14.6,,310,TZS,No,0,133.32,0,,3,+255 27 234 5760,SingleParent,Hamida,investee
+SP_TZ_003,SingleParent,Tanzania,45,Tertiary,Informal,158.78,30.0,29.0,27.46,19.56,13.87,,375,TZS,Yes,16,119.89000000000001,0,,1,+255 27 220 3910,SingleParent,Lurdi,investee
+SP_TZ_004,SingleParent,Tanzania,50,No formal,Self-employed,176.22,35.46,38.56,34.89,23.45,15.0,,300,TZS,Yes,18,147.36,0,,5,+255 22 253 5781,SingleParent,Narry,investee
+SP_TZ_005,SingleParent,Tanzania,52,Primary,Self-employed,317.47,39.19,8.172,27.9,19.54,18.0,,300,TZS,No,0,112.80199999999999,0,,5,+255 23 252 5487,SingleParent,Tanya,investee
